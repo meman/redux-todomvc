@@ -1,6 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Hello from './components/Hello';
-import './style/main.scss';
+import {List, Map} from 'immutable';
+import {Provider} from 'react-redux';
+import {HelloContainer} from './components/Hello';
+import configureStore from './store/configureStore';
 
-ReactDOM.render(<Hello/>,document.getElementById('app'));
+const store = configureStore();
+
+ReactDOM.render(
+  <Provider store={store}>
+    <HelloContainer />
+  </Provider>,
+  document.getElementById('app')
+);
