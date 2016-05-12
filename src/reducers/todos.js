@@ -21,6 +21,12 @@ function toggleCompleted(state,id){
   return state.update(todos=> todos.set(index,updatedTodo));
 }
 
+function updateTodo(state,id,newText){
+  const index = state.findIndex((todo)=>{return todo.get('id') === id;});
+  const updatedTodo = state.get(index).update('text',text => newText );
+  return state.update(todos=> todos.set(index,updatedTodo));
+}
+
 export default function(state, action) {
   state = !state ? List() : state ;
   switch (action.type) {
@@ -28,6 +34,8 @@ export default function(state, action) {
       return addTodo(state,action.text);
     case 'REMOVE_TODO':
       return removeTodo(state,action.id);
+    case 'UPDATE_TODO':
+      return updateTodo(state,action.id,action.text);
     case 'TOGGLE_COMPLETED':
       return toggleCompleted(state,action.id);
     default:

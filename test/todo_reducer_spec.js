@@ -80,6 +80,19 @@ describe('reducer.removeTodo',()=>{
   });
 });
 
+describe('reducer.updateTodo',()=>{
+  it('handle taking a id and text and updating a todo',()=>{
+    const initalState = fromJS([{id:1,text:'react',completed:false}]);
+    const action = {
+      type:'UPDATE_TODO',
+      id:1,
+      text:'sample'
+    };
+    const newState = reducer(initalState,action);
+    expect(newState).to.equal(fromJS([{id:1,text:'sample',completed:false}]));
+  });
+});
+
 describe('reducer.toggleCompleted',()=>{
   it('handles changing the completed state of a todo from false to true',()=>{
     const initalState = fromJS([
