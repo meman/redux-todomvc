@@ -1,7 +1,7 @@
 import React from 'react';
 import {addTodo} from '../actions/todos';
 import AddTodo from '../containers/AddTodo';
-import TodoListContainer from '../containers/TodoListContainer';
+import VisableTodoList from '../containers/VisableTodoList';
 import '../style/main.scss';
 
 export default class App extends React.Component {
@@ -10,7 +10,7 @@ export default class App extends React.Component {
       <div className='todo-app'>
         <h1>Todos</h1>
         <AddTodo></AddTodo>
-        <TodoListContainer></TodoListContainer>
+        <VisableTodoList></VisableTodoList>
       </div>
     );
   }

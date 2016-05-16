@@ -1,22 +1,31 @@
 import React,{Component,PropTypes} from 'react';
-import Todo from './Todo';
+import TodoItem from './TodoItem';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
-export default class ListTodos extends Component {
+class TodoList extends Component {
   render(){
-    return (
-      <ul className='todos-list'>
-        {this.props.todos.map((todo)=>{
-          return <Todo
-          key={todo.get('id')}
-          text={todo.get('text')}
-          id={todo.get('id')}
-          isComplete={todo.get('completed')}
-          onClickRemove ={this.props.removeTodo}
-          onUpdateTodo = {this.props.updateTodo}
-          onToggleCompleted = {this.props.toggleCompleted}
-          ></Todo>;
-        })}
-      </ul>
-    );
+    return <ul className='todo-list'>
+    {this.props.todos.map((todo)=>{
+      return <TodoItem
+      key = {todo.get('id')}
+      todo={todo}
+      toggleCompleted = {this.props.toggleCompleted}
+      updateTodo = {this.props.updateTodo}
+      removeTodo = {this.props.removeTodo}
+      ></TodoItem>;
+    })}
+    </ul>;
   }
 }
+
+TodoList.propTypes = {
+  todos:ImmutablePropTypes.listOf(
+    ImmutablePropTypes.contains({
+      id:PropTypes.number.isRequired,
+      text:PropTypes.string.isRequired,
+      completed:PropTypes.bool.isRequired,
+    })
+  ).isRequired
+};
+
+export default TodoList;
