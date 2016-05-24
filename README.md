@@ -33,7 +33,7 @@ you need to run the development server with webpack dev server (See below).
 Run webpack dev server (for assets):
 
 ```
-npm run start:dev
+npm run start
 ```
 
 Visit [http://localhost:8000/](http://localhost:8000/).
