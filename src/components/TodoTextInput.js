@@ -16,13 +16,20 @@ class TodoTextInput extends Component {
       this.setState({value:''});
     }
   }
+  _handleBlur(e){
+    if(!this.props.newTodo){
+      this.props.onSave(e.target.value);
+    }
+  }
   render(){
     return <input type="text"
+    className='todo-text-input'
     value={this.state.value}
     onChange={(e)=>this.setState({value:e.target.value})}
-    onBlur={(e)=>this.props.onSave(e.target.value)}
+    onBlur={this._handleBlur.bind(this)}
     onKeyDown={this._handleKeyDown.bind(this)}
-    autoFocus
+    placeholder = {this.props.placeholder}
+    autoFocus = {this.props.focus}
     />;
   }
 }

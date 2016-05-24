@@ -1,4 +1,5 @@
 import React,{Component,PropTypes} from 'react';
+import ClassNames from 'classnames';
 import shallowCompare from 'react-addons-shallow-compare';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
@@ -28,24 +29,16 @@ class TodoItem extends Component {
   }
   render(){
     const {text,completed,id} = this.props.todo.toJS();
-    return (<li>
-      <input type="checkbox" value={completed} onClick={(e)=>this.props.toggleCompleted(id)}/>
+    const classes = ClassNames('todo-item',{'isEditing':this.state.isEditing});
+    return (<li className={classes} >
+      <input type="checkbox" checked={completed} onClick={(e)=>this.props.toggleCompleted(id)}/>
       {this.state.isEditing ?
-        <TodoTextInput text={text} onSave={(text)=>this._handleSave(text)}></TodoTextInput> :
-        <label onDoubleClick={this._handleEditing}>{text}</label>
+        <TodoTextInput text={text} onSave={(text)=>this._handleSave(text)} focus={true}></TodoTextInput> :
+        <label className='todo-text-input' onDoubleClick={this._handleEditing}>{text}</label>
       }
-      <button onClick={(e)=>this.props.removeTodo(id)}>X</button>
+      <button className='remove-btn' onClick={(e)=>this.props.removeTodo(id)}>X</button>
     </li>);
   }
 }
-
-// TodoItem.propTypes = {
-//   todo:ImmutablePropTypes.mapOf({
-//       id:PropTypes.number.isRequired,
-//       text:PropTypes.string.isRequired,
-//       completed:PropTypes.bool.isRequired
-//   }).isRequired
-//
-// };
 
 export default TodoItem;

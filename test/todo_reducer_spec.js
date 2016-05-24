@@ -1,15 +1,15 @@
 import {List, Map, fromJS} from 'immutable';
 import {expect} from 'chai';
-import reducer from '../src/reducers/todos';
+import todoReducer from '../src/reducers/todos';
 
-describe('reducer.addTodo',()=>{
+describe('todoReducer.addTodo',()=>{
   it('Handle adding the a new todo to empty list',()=>{
     const initalState = List();
     const action = {
       type:'ADD_TODO',
       text:'sample text'
     };
-    const newState = reducer(initalState,action);
+    const newState = todoReducer(initalState,action);
     expect(newState).to.equal(fromJS([
       {id:1,text:'sample text',completed:false}
     ]));
@@ -20,7 +20,7 @@ describe('reducer.addTodo',()=>{
       type:'ADD_TODO',
       text:'sample text'
     };
-    const newState = reducer(initalState,action);
+    const newState = todoReducer(initalState,action);
     expect(newState).to.equal(fromJS([
       {id:1,text:'react',completed:false},
       {id:2,text:'sample text',completed:false}
@@ -32,7 +32,7 @@ describe('reducer.addTodo',()=>{
       type:'ADD_TODO',
       text:''
     };
-    const newState = reducer(initalState,action);
+    const newState = todoReducer(initalState,action);
     expect(newState).to.equal(fromJS([
       {id:1,text:'react',completed:false}
     ]));
@@ -43,21 +43,21 @@ describe('reducer.addTodo',()=>{
       type:'ADD_TODO',
       text:undefined
     };
-    const newState = reducer(initalState,action);
+    const newState = todoReducer(initalState,action);
     expect(newState).to.equal(fromJS([
       {id:1,text:'react',completed:false}
     ]));
   });
 });
 
-describe('reducer.removeTodo',()=>{
+describe('todoReducer.removeTodo',()=>{
   it('remove todo from list given the id',()=>{
     const initalState = fromJS([{id:1,text:'react',completed:false}]);
     const action = {
       type:'REMOVE_TODO',
       id:1
     };
-    const newState = reducer(initalState,action);
+    const newState = todoReducer(initalState,action);
     expect(newState).to.equal(List());
   });
   it('return current state if id is not found',()=>{
@@ -66,7 +66,7 @@ describe('reducer.removeTodo',()=>{
       type:'REMOVE_TODO',
       id:2
     };
-    const newState = reducer(initalState,action);
+    const newState = todoReducer(initalState,action);
     expect(newState).to.equal(initalState);
   });
   it('return current state if id is undefined',()=>{
@@ -75,12 +75,12 @@ describe('reducer.removeTodo',()=>{
       type:'REMOVE_TODO',
       id:undefined
     };
-    const newState = reducer(initalState,action);
+    const newState = todoReducer(initalState,action);
     expect(newState).to.equal(initalState);
   });
 });
 
-describe('reducer.updateTodo',()=>{
+describe('todoReducer.updateTodo',()=>{
   it('handle taking a id and text and updating a todo',()=>{
     const initalState = fromJS([{id:1,text:'react',completed:false}]);
     const action = {
@@ -88,12 +88,12 @@ describe('reducer.updateTodo',()=>{
       id:1,
       text:'sample'
     };
-    const newState = reducer(initalState,action);
+    const newState = todoReducer(initalState,action);
     expect(newState).to.equal(fromJS([{id:1,text:'sample',completed:false}]));
   });
 });
 
-describe('reducer.toggleCompleted',()=>{
+describe('todoReducer.toggleCompleted',()=>{
   it('handles changing the completed state of a todo from false to true',()=>{
     const initalState = fromJS([
         {id:1,text:'react',completed:true},
@@ -105,7 +105,7 @@ describe('reducer.toggleCompleted',()=>{
       type:'TOGGLE_COMPLETED',
       id:2
     };
-    const newState = reducer(initalState,action);
+    const newState = todoReducer(initalState,action);
     expect(newState).to.equal(fromJS([
           {id:1,text:'react',completed:true},
           {id:2,text:'sample',completed:true},
@@ -123,11 +123,69 @@ describe('reducer.toggleCompleted',()=>{
       type:'TOGGLE_COMPLETED',
       id:1
     };
-    const newState = reducer(initalState,action);
+    const newState = todoReducer(initalState,action);
     expect(newState).to.equal(fromJS([
           {id:1,text:'react',completed:false},
           {id:2,text:'sample',completed:false},
           {id:3,text:'random',completed:false}
+        ]
+      ));
+  });
+});
+
+describe('todoReducer.completeAll',()=>{
+  it('handles changing all todos completed state to true',()=>{
+    const initalState = fromJS([
+        {id:1,text:'react',completed:true},
+        {id:2,text:'sample',completed:false},
+        {id:3,text:'random',completed:false}
+      ]
+    );
+    const action = {
+      type:'COMPLETE_ALL'
+    };
+    const newState = todoReducer(initalState,action);
+    expect(newState).to.equal(fromJS([
+          {id:1,text:'react',completed:true},
+          {id:2,text:'sample',completed:true},
+          {id:3,text:'random',completed:true}
+        ]
+      ));
+  });
+  it('handles changing all todos completed state to false if all are already true',()=>{
+    const initalState = fromJS([
+        {id:1,text:'react',completed:true},
+        {id:2,text:'sample',completed:true},
+        {id:3,text:'random',completed:true}
+      ]
+    );
+    const action = {
+      type:'COMPLETE_ALL'
+    };
+    const newState = todoReducer(initalState,action);
+    expect(newState).to.equal(fromJS([
+          {id:1,text:'react',completed:false},
+          {id:2,text:'sample',completed:false},
+          {id:3,text:'random',completed:false}
+        ]
+      ));
+  });
+});
+
+describe('todoReducer.removeCompleted',()=>{
+  it('handles removeing all completed todos',()=>{
+    const initalState = fromJS([
+        {id:1,text:'react',completed:true},
+        {id:2,text:'sample',completed:false},
+        {id:3,text:'random',completed:true}
+      ]
+    );
+    const action = {
+      type:'REMOVE_COMPLETED'
+    };
+    const newState = todoReducer(initalState,action);
+    expect(newState).to.equal(fromJS([
+          {id:2,text:'sample',completed:false}
         ]
       ));
   });
