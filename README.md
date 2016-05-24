@@ -1,8 +1,8 @@
 
 This is an implementation of [TodoMVC](http://todomvc.com/) built using:
 
-- [React & ReactDOM](http://facebook.github.io/react/) 0.14.7
-- [Redux](https://github.com/rackt/redux) 3.0.6
+- [React & ReactDOM](http://facebook.github.io/react/)
+- [Redux](https://github.com/rackt/redux)
 
 ## Getting Started
 
